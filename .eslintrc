@@ -15,7 +15,8 @@
     "amd": true,
     "es6": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+      "jquery": true
   },
   "rules": {
     "comma-dangle": 1,
