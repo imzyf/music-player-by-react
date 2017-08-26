@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import Progress from '../Progress'
+import Progress from '../common/Progress'
 import './Player.scss'
 
 export default class Player extends Component {

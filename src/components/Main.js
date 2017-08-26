@@ -6,14 +6,15 @@ import '../styles/Main.scss'
 
 
 import Player from "components/page/Player";
-import Header from "components/Header";
+import Header from "components/common/Header";
 import {MUSIC_LIST} from "components/config/MusicList";
-
+import MusicList from "./page/MusicList";
 
 export default class AppComponent extends Component {
 
     constructor(props) {
         super(props);
+        this.musicList = MUSIC_LIST;
         this.state = {
             currentMusicItem: MUSIC_LIST[0]
         }
@@ -35,12 +36,13 @@ export default class AppComponent extends Component {
 
 
     render() {
-
-
         return (
             <div className="index">
                 <Header/>
                 <Player currentMusicItem={this.state.currentMusicItem}/>
+                <MusicList musicList={this.musicList}
+                           currentMusicItem={this.state.currentMusicItem}
+                />
                 <div id='player'></div>
             </div>
         );
