@@ -7,8 +7,10 @@ export default class Progress extends Component {
 
     render() {
         return (
-            <div>
-                <p>{this.props.progress}</p>
+            <div className="components-progress">
+                <div className="progress" style={{
+                    width: `${this.props.progress}%`
+                }}></div>
             </div>
         );
     }

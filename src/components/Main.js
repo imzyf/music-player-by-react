@@ -13,7 +13,7 @@ export default class AppComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            progress: '-'
+            progress: '0'
         }
     }
 
@@ -31,9 +31,13 @@ export default class AppComponent extends Component {
         });
         $("#player").bind($.jPlayer.event.timeupdate, (e) => {
             this.setState({
-                progress: Math.round(e.jPlayer.status.currentTime)
-            });
+                progress:e.jPlayer.status.currentPercentAbsolute
+            })
         });
+    }
+
+    componentWillUnmout() {
+        $("#player").unbind($.jPlayer.event.timeupdate);
     }
 
 

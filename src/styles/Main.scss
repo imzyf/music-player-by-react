@@ -15,3 +15,18 @@ index {
         text-indent: 20px;
     }
 }
+
+.components-progress{
+    width: 100%;
+    height: 3px;
+    background-color: #cccccc;
+    cursor: pointer;
+
+    margin-top: 10px;
+
+    .progress{
+        width: 0;
+        height: 3px;
+        background-color: red;
+    }
+}
