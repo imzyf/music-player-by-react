@@ -3,10 +3,16 @@ import React, {Component} from 'react';
 import Progress from '../common/Progress'
 import './Player.scss'
 
-import {    Link } from 'react-router-dom'
-
+import {Link} from 'react-router-dom'
+import PubSub from 'pubsub-js'
 
 export default class Player extends Component {
+
+
+    static defaultProps = {
+        // 音乐循环模式
+        repeatType: 'cycle'
+    };
 
     constructor(props) {
         super(props);
@@ -15,7 +21,8 @@ export default class Player extends Component {
             progress: 0,
             // 音量的值
             volume: 0,
-            isPlay: true
+            isPlay: true,
+            leftTime: '00:00'
 
         };
         // 总时间
@@ -29,7 +36,8 @@ export default class Player extends Component {
             this.setState({
                 progress: e.jPlayer.status.currentPercentAbsolute,
                 // 设置音量
-                volume: e.jPlayer.options.volume * 100
+                volume: e.jPlayer.options.volume * 100,
+                leftTime: this.formatTime(this.duration * (1 - e.jPlayer.status.currentPercentAbsolute / 100))
             })
         });
     }
@@ -59,12 +67,38 @@ export default class Player extends Component {
         });
     }
 
+    playPrev(e) {
+        PubSub.publish('PLAY_PREV');
+
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    playNext(e) {
+        PubSub.publish('PLAY_NEXT');
+
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    formatTime(time) {
+        time = Math.floor(time);
+        let miniutes = Math.floor(time / 60);
+        let seconds = Math.floor(time % 60);
+
+        seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+        return `${miniutes}:${seconds}`;
+
+    }
+
+
     render() {
 
-        const {id, title, artist, file, cover} = this.props.currentMusicItem;
+        const {id, title, artist, cover} = this.props.currentMusicItem;
         return (
             <div className="player-page">
-                <h1 className="caption"><Link to="/music-list">我的私人音乐坊 &gt;</Link></h1>
+                <h1 className="caption"><Link to="/">我的私人音乐坊 &gt;</Link></h1>
                 <div className="mt20 row">
                     <div className="controll-wrapper">
                         <h2 className="music-title">{title}</h2>
@@ -78,7 +112,7 @@ export default class Player extends Component {
                                     <Progress
                                         progress={this.state.volume}
                                         progressChangeHandler={this.changeVolumeHandler.bind(this)}
-                                        barColor="green"
+                                        barColor="#404040"
                                     />
                                 </div>
                             </div>
@@ -91,11 +125,11 @@ export default class Player extends Component {
                         </div>
                         <div className="mt35 row">
                             <div>
-                                <i className="icon prev"></i>
+                                <i className="icon prev" onClick={this.playPrev.bind(this)}></i>
                                 <i className={`icon ml20 ${this.state.isPlay ? 'pause' : 'play'}`}
                                    onClick={this.play.bind(this)}></i>
 
-                                <i className="icon next ml20"></i>
+                                <i className="icon next ml20" onClick={this.playNext.bind(this)}></i>
                             </div>
                             <div className="-col-auto">
                                 <i className={`icon repeat-${this.props.repeatType}`}></i>

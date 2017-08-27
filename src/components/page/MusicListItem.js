@@ -4,8 +4,6 @@ import PubSub from 'pubsub-js'
 export default class MusicListItem extends Component {
 
     deleteHandler(item, e) {
-
-        console.log(item);
         PubSub.publish('DELETE_MUSIC', item);
 
         e.stopPropagation();
@@ -13,8 +11,6 @@ export default class MusicListItem extends Component {
     }
 
     playHandler(item, e) {
-
-        console.log(item);
         PubSub.publish('PLAY_MUSIC', item);
 
         e.stopPropagation();

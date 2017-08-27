@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 
 import 'normalize.css'
+import '../styles/reset.css'
 import '../styles/common.css'
 import '../styles/Main.scss'
 import {
     BrowserRouter as Router,
-    Route,
+    Route
 } from 'react-router-dom'
 
 import Player from "components/page/Player";
@@ -16,20 +17,13 @@ import MusicList from "./page/MusicList";
 import PubSub from 'pubsub-js'
 
 
-const MusicListRoute = () => {
-
-    return (<MusicList
-        musicList={MUSIC_LIST}
-        currentMusicItem={MUSIC_LIST[0]}
-    />)
-};
-
 export class AppComponent extends Component {
 
     constructor(props) {
         super(props);
-        this.musicList = MUSIC_LIST;
+
         this.state = {
+            musicList: MUSIC_LIST,
             currentMusicItem: MUSIC_LIST[0]
         }
     }
@@ -49,8 +43,6 @@ export class AppComponent extends Component {
         });
 
         PubSub.subscribe('DELETE_MUSIC', (msg, currentMusicItem) => {
-
-            console.log(123);
             this.setState({
                 musicList: this.state.musicList.filter(item => {
                     return item !== currentMusicItem
@@ -60,8 +52,15 @@ export class AppComponent extends Component {
 
         PubSub.subscribe('PLAY_MUSIC', (msg, currentMusicItem) => {
             this.playMusic(currentMusicItem)
+        });
 
-        })
+        PubSub.subscribe('PLAY_PREV', (msg) => {
+            this.playNext('prev')
+        });
+
+        PubSub.subscribe('PLAY_NEXT', (msg) => {
+            this.playNext('next')
+        });
     }
 
     componentWillUnmount() {
@@ -85,7 +84,7 @@ export class AppComponent extends Component {
         let index = this.findMusicIndex(this.state.currentMusicItem);
         // 要播放音乐的索引
         let nextIndex = 0;
-        const musicListLength = this.musicList.length;
+        const musicListLength = this.state.musicList.length;
         if (type === 'next') {
             nextIndex = (index + 1) % musicListLength;
         } else {
@@ -101,12 +100,18 @@ export class AppComponent extends Component {
 
 
     findMusicIndex(musicItem) {
-        return this.state.musicList.indexOf(musicItem)
+        return this.state.musicList.indexOf(musicItem);
     }
 
     render() {
         return (
-            <Player currentMusicItem={this.state.currentMusicItem}/>
+            <div>
+                <Player currentMusicItem={this.state.currentMusicItem}/>
+                <MusicList
+                    musicList={this.state.musicList}
+                    currentMusicItem={this.state.currentMusicItem}
+                />
+            </div>
 
         );
     }
@@ -120,11 +125,9 @@ export default class Root extends Component {
                 <div className="index">
                     <Header/>
                     <Route exact path="/" component={AppComponent}/>
-                    <Route path="/music-list" component={MusicListRoute}/>
+                    {/*<Route path="/music-list" component={MusicListRoute}/>*/}
                 </div>
             </Router>
         );
     }
-
-
 }

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class Progress extends Component {
 
     static defaultProps = {
-        barColor: 'red'
+        barColor: 'rgb(47, 152, 66)'
     };
 
     constructor(props) {
