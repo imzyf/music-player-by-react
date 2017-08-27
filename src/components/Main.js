@@ -3,14 +3,27 @@ import React, {Component} from 'react';
 import 'normalize.css'
 import '../styles/common.css'
 import '../styles/Main.scss'
-
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+} from 'react-router-dom'
 
 import Player from "components/page/Player";
 import Header from "components/common/Header";
 import {MUSIC_LIST} from "components/config/MusicList";
 import MusicList from "./page/MusicList";
 
-export default class AppComponent extends Component {
+
+const MusicListRoute = () => {
+
+    return (<MusicList
+        musicList={MUSIC_LIST}
+        currentMusicItem={MUSIC_LIST[0]}
+    />)
+};
+
+export class AppComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -37,14 +50,25 @@ export default class AppComponent extends Component {
 
     render() {
         return (
-            <div className="index">
-                <Header/>
-                <Player currentMusicItem={this.state.currentMusicItem}/>
-                <MusicList musicList={this.musicList}
-                           currentMusicItem={this.state.currentMusicItem}
-                />
-                <div id='player'></div>
-            </div>
+            <Player currentMusicItem={this.state.currentMusicItem}/>
+
         );
     }
+}
+
+
+export default class Root extends Component {
+    render() {
+        return (
+            <Router>
+                <div className="index">
+                    <Header/>
+                    <Route exact path="/" component={AppComponent}/>
+                    <Route path="/music-list" component={MusicListRoute}/>
+                </div>
+            </Router>
+        );
+    }
+
+
 }
