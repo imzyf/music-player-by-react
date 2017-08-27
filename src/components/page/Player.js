@@ -3,11 +3,7 @@ import React, {Component} from 'react';
 import Progress from '../common/Progress'
 import './Player.scss'
 
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom'
+import {    Link } from 'react-router-dom'
 
 
 export default class Player extends Component {
@@ -38,7 +34,7 @@ export default class Player extends Component {
         });
     }
 
-    componentWillUnmout() {
+    componentWillUnmount() {
         $('#player').unbind($.jPlayer.event.timeupdate);
     }
 
@@ -49,14 +45,14 @@ export default class Player extends Component {
 
     // 修改音量的回调
     changeVolumeHandler(progress) {
-        $("#player").jPlayer("volume", progress);
+        $('#player').jPlayer('volume', progress);
     }
 
     play() {
         if (this.state.isPlay) {
-            $("#player").jPlayer("pause");
+            $('#player').jPlayer('pause');
         } else {
-            $("#player").jPlayer("play");
+            $('#player').jPlayer('play');
         }
         this.setState({
             isPlay: !this.state.isPlay

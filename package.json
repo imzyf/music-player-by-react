@@ -65,6 +65,7 @@
   "dependencies": {
     "core-js": "^2.0.0",
     "normalize.css": "^4.0.0",
+    "pubsub-js": "^1.5.7",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
     "react-router-dom": "^4.2.2"
